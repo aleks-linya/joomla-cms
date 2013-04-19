@@ -96,6 +96,61 @@ class TemplatesModelTemplate extends JModelLegacy
 	}
 
 	/**
+	 * Method to get template overrides.
+	 *
+	 * @return  array  A nested array of template overrides.
+	 */
+	public function getOverrides()
+	{
+		$result	= array();
+
+		if ($template = $this->getTemplate())
+		{
+			$overridesPath = $template->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE;
+			$overridesPath .= '/templates/' . $template->element . '/html/';
+			$result = $this->overrides($overridesPath);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to get template overrides.
+	 *
+	 * @param   string  $path     Path to the template overrides.
+	 * @param   string  $subPath  Path to the current directory.
+	 *
+	 * @return  array  A nested array of template overrides.
+	 */
+	public function overrides($path, $subPath = '')
+	{
+		$node = array();
+		$files = array();
+		$dir = new DirectoryIterator($path);
+
+		foreach ($dir as $fileInfo)
+		{
+			if (!$fileInfo->isDot())
+			{
+				if ($fileInfo->isDir())
+				{
+					$node[$fileInfo->getFilename()] = $this->overrides($fileInfo->getPathname(), $subPath . '/' . $fileInfo->getFilename());
+				}
+				else
+				{
+					if ($fileInfo->getExtension() == 'php')
+					{
+						$files[$fileInfo->getFilename()] = $subPath . '/' . $fileInfo->getFilename();
+					}
+				}
+			}
+		}
+		$node += $files;
+
+		return $node;
+	}
+
+	/**
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.

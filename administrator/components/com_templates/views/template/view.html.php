@@ -29,9 +29,10 @@ class TemplatesViewTemplate extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->files	= $this->get('Files');
-		$this->state	= $this->get('State');
-		$this->template	= $this->get('Template');
+		$this->files		= $this->get('Files');
+		$this->state		= $this->get('State');
+		$this->template		= $this->get('Template');
+		$this->overrides	= $this->get('Overrides');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
