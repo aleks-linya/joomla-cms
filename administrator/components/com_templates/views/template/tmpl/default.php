@@ -30,8 +30,8 @@ $input = JFactory::getApplication()->input;
 			<p><?php  echo JText::_($this->template->xmldata->description); ?></p>
 			<div class="clearfix"></div>
 			<hr />
-			<?php echo JHtml::_('bootstrap.startPane', 'myTab', array('active' => 'master')); ?>
-			<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'master', JText::_('COM_TEMPLATES_TEMPLATE_MASTER_AND_CSS_FILES', true)); ?>
+			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'master')); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'master', JText::_('COM_TEMPLATES_TEMPLATE_MASTER_AND_CSS_FILES', true)); ?>
 			<div class="row-fluid">
 				<div class="span6">
 					<div class="page-header">
@@ -117,14 +117,19 @@ $input = JFactory::getApplication()->input;
 				<a href="#" class="modal">
 					<?php echo JText::sprintf('COM_TEMPLATES_TEMPLATE_ADD_CSS');?></a>
 			</div>-->
-			<?php echo JHtml::_('bootstrap.endPanel'); ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-			<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'overrides', JText::_('COM_TEMPLATES_OVERRIDES', true)); ?>
-				<?php //get the menu parameters that are automatically set but may be modified.
-					echo $this->loadTemplate('overrides'); ?>
-			<?php echo JHtml::_('bootstrap.endPanel'); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'overrides', JText::_('COM_TEMPLATES_OVERRIDES', true)); ?>
+				<?php echo $this->loadTemplate('overrides'); ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-			<?php echo JHtml::_('bootstrap.endPane'); ?>
+			<?php if ($this->template->element == 'isis') : ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'less', JText::_('COM_TEMPLATES_LESS', true)); ?>
+					<?php echo $this->loadTemplate('less'); ?>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+			<?php endif; ?>
+
+			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		</fieldset>
 
 		<input type="hidden" name="task" value="" />
